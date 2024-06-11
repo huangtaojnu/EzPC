@@ -404,6 +404,10 @@ public:
   FPArray mulpow2(const FPArray &x, const FixArray &exp, bool check_bounds = true);
   //// exp[i] = exp (with bitlength x.e_bits + 2)
   FPArray mulpow2(const FPArray &x, int exp, bool check_bounds = true);
+  
+  FPArray divpow2(const FPArray &x, const FixArray &exp, bool check_bounds = true);
+
+  FPArray divpow2(const FPArray &x, int exp, bool check_bounds = true);
 
   vector<FPArray> mul(const vector<FPArray> &x, const vector<FPArray> &y) ;
 

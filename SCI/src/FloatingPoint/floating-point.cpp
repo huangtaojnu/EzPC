@@ -921,6 +921,40 @@ FPArray FPOp::mulpow2(const FPArray &x, int exp, bool check_bounds) {
   return this->mulpow2(x, fp_exp, check_bounds);
 }
 
+//除以2的整数次幂，相当于直接在阶码上相减。
+FPArray FPOp::divpow2(const FPArray &x, const FixArray &exp,
+                      bool check_bounds) {
+  assert(x.party != PUBLIC);
+  assert(x.size == exp.size);
+  assert(exp.ell <= x.e_bits + 2);
+  assert(exp.signed_ == true);
+
+  FixArray exp_ext = exp;
+  if (exp_ext.ell < x.e_bits + 2) {
+    fix->extend(exp_ext, x.e_bits + 2, nullptr);
+  }
+  BoolArray x_s, x_z;
+  FixArray x_m, x_e;
+  tie(x_s, x_z, x_m, x_e) = get_components(x);
+
+  FixArray ret_e = fix->sub(x_e, exp_ext);
+
+  FPArray ret = this->input(x.party, x.size, x_s.data, x_z.data, x_m.data,
+          ret_e.data, x.m_bits, x.e_bits);
+
+  if (check_bounds) {
+    ret = this->check_bounds(ret);
+  }
+
+  return ret;
+}
+
+FPArray FPOp::divpow2(const FPArray &x, int exp, bool check_bounds) {
+  assert(x.party != PUBLIC);
+  FixArray fp_exp = fix->input(PUBLIC, x.size, int64_t(exp), true, x.e_bits + 2, 0);
+  return this->divpow2(x, fp_exp, check_bounds);
+}
+
 FPArray FPOp::mul(const FPArray &x, const FPArray &y, bool check_bounds) {
   assert(x.party != PUBLIC || y.party != PUBLIC);
   assert(x.size == y.size);
@@ -969,6 +1003,8 @@ FPArray FPOp::mul(const FPArray &x, const FPArray &y, bool check_bounds) {
 
   return ret;
 }
+
+
 
 vector<FPArray> FPOp::mul(const vector<FPArray> &x, const vector<FPArray> &y) {
   FPArray concat_x = concat(x) ;

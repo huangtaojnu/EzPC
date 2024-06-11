@@ -59,7 +59,6 @@ public:
   FPArray exp(const FPArray &x);
   FPArray ln(const FPArray &x);
   FPArray erf(const FPArray &x);
-  vector<FPArray> softmax(const vector<FPArray>& x);
 
   FPArray sigmoid_bf16(const FPArray &x);
   FPArray sigmoid_fp32(const FPArray &x);
@@ -68,6 +67,20 @@ public:
 
   vector<FPArray> softmax_beacon(const vector<FPArray>& x);
   vector<FPArray> softmax_secfloat(const vector<FPArray>& x);
+
+  FPArray arcsinpi(const FPArray &alpha);
+  FPArray arccospi(const FPArray &alpha);
+  FPArray arctanpi(const FPArray &alpha);
+  FPArray tanh(const FPArray &alpha);
+  FPArray sqrt(const FPArray &alpha);
+  vector<FPArray> softmax_jnu(const vector<FPArray>& x);
+
+  FPArray geo1(const FPArray &lambda1, const FPArray &lambda2,const FPArray &phi1,const FPArray &phi2);
+  FPArray geo2(const FPArray &lambda1, const FPArray &lambda2,const FPArray &phi1,const FPArray &phi2);
+
+  FPArray gelu(const FPArray &alpha);
+  vector<FPArray> layernorm(const vector<FPArray>& x);
+
 };
 
 #endif // FLOATING_POINT_MATH_H__
